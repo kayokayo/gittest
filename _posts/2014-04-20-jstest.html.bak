@@ -55,5 +55,7 @@ title: 测试h5
 
 <canvas id="myWebGL" style="border: none;" width="1024" height="768"></canvas>
 <script type = "text/javascript">
+	alert("gl前")
 	window.onload = webGLStart;
+	alert("gl后");
 </script>
