@@ -3,8 +3,7 @@ layout: default
 title: 测试h5
 ---
 
-<html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 
 <script id="shader-vs" type="x-shader/x-vertex">
     //定义一个顶点属性,因为我们是2D游戏,所以只有XY,所以我们定义了vec2,后面是2,
@@ -52,9 +51,9 @@ title: 测试h5
 </script>
 
 <script type="text/javascript"  LANGUAGE="JavaScript" src="DisplayerObjectGL.js"></script>
-</head>
-<body onload="webGLStart();">
-    <canvas id="myWebGL" style="border: none;" width="1024" height="768"></canvas>
-</body>
 
-</html>
+
+<canvas id="myWebGL" style="border: none;" width="1024" height="768"></canvas>
+<script type = "text/javascript">
+	window.onload = webGLStart;
+</script>
