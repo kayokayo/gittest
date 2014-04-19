@@ -3,11 +3,58 @@ layout: default
 title: 测试h5
 ---
 
-<h2>{{ page.title }}</h2>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<p>我的第一篇文章</p>
-<script>
-	alert("hah");
+<script id="shader-vs" type="x-shader/x-vertex">
+    //定义一个顶点属性,因为我们是2D游戏,所以只有XY,所以我们定义了vec2,后面是2,
+    //的这样一个寄存器,当然你也可以定义vec3，vec4，等等,aVertexPosition是这个寄存器的名称和外部的JS对应的，
+    //一会你会看到代码
+    attribute vec2 aVertexPosition;
+
+    //原理同上定一个2维的UV信息的寄存器，这里也是外部JS传递过来的数据
+    attribute vec2 aTextureUv;
+
+    //插值共享寄存器寄存器，看到前面的定义的类型了吗varying这和上面的attribute不同,attribute一般用于本地数据传递,
+    //varying用于顶点着色器像像素着色器传值,一般就是传UV的插值信息
+    varying vec2 vTextureCoord;
+
+    //正交矩阵,注意了,类型不同了,这里是mat4,也就是4*4的矩阵意思
+    uniform mat4 oRMatrix;
+
+    //执行的代码片段放这里
+    void main(void) {
+        //gl_Position是内置寄存器，它是一个4维的寄存器,但实际上我们的2D游戏只用到了2维,所以我们可以强制转换类型,
+        //把前面2维的寄存器丢进去,因为还有剩下的2维,所以你可以填入默认值,1,1
+        //把矩阵和坐标向量相乘得出了最终的坐标
+        gl_Position =  oRMatrix*vec4(aVertexPosition,1.0,1.0);
+        //这是一个神奇的过程,你看不到插值计算你只要把UV信息给这个寄存去,它传递到像素着色器时再获取就是插值后的坐标了
+        vTextureCoord = aTextureUv;
+    }
 </script>
 
-<p>{{ page.date | date_to_string }}</p>
+<script id="shader-fs" type="x-shader/x-fragment">
+        //先声明一下寄存去可以使用浮点数
+        precision mediump float;
+
+        //就是这里接受插值计算坐标,和顶点着色器定义一模一样的寄存器
+        varying vec2 vTextureCoord;
+
+        //这里是JS传递过来的纹理数据,也就是原始数据,也就是采样数据
+        uniform sampler2D uSampler;
+
+        //执行的代码片段放这里
+        void main(void) {
+        //我们不是用传递过来的纹理数据直接显示,而是把纹理数据当作采样参数,和UV插值坐标来采样,最终输出到gl_FragColor
+        //这个内置的寄存器,这样像素就最终显示到了我们的画面上
+        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        }
+</script>
+
+<script type="text/javascript"  LANGUAGE="JavaScript" src="DisplayerObjectGL.js"></script>
+</head>
+<body onload="webGLStart();">
+    <canvas id="myWebGL" style="border: none;" width="1024" height="768"></canvas>
+</body>
+
+</html>
