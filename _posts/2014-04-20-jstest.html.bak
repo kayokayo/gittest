@@ -51,11 +51,14 @@ title: 测试h5
 </script>
 
 <script type="text/javascript"  LANGUAGE="JavaScript" src="DisplayerObjectGL.js"></script>
+<script type = "text/javascript">
+	alert("hah");
+</script>
 
 
 <canvas id="myWebGL" style="border: none;" width="1024" height="768"></canvas>
 <script type = "text/javascript">
 	
-	window.onload = function(){ webGLStart();}
-	
+	//window.onload = function(){ webGLStart();}
+	window.onload = function(){test();}
 </script>
