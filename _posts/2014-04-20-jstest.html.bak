@@ -258,7 +258,7 @@ function webGLStart() {
     }
 
     //设置图片地址
-    this.image.src = "taipinyang.png";
+    this.image.src = "/taipinyang.png";
 	alert("出webglstart");
 }
 
