@@ -1,0 +1,4 @@
+function printTest()
+{
+	alert("printTest");
+}
